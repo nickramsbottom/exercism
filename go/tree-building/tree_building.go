@@ -19,27 +19,13 @@ type Node struct {
 
 // Build creates a tree data structure
 func Build(records []Record) (*Node, error) {
-	if len(records) == 0 {
-		return nil, nil
-	}
-
-	recordsSlice := records[:]
-
-	sort.Slice(recordsSlice, func(i, j int) bool {
-		return recordsSlice[i].ID < recordsSlice[j].ID
+	sort.Slice(records, func(i, j int) bool {
+		return records[i].ID < records[j].ID
 	})
-
-	if recordsSlice[0].ID != 0 {
-		return nil, errors.New("No root node")
-	}
 
 	nodes := make(map[int]*Node)
 
-	for i, record := range recordsSlice {
-		if record.ID == 0 && record.Parent != 0 {
-			return nil, errors.New("Root node should have no parent")
-		}
-
+	for i, record := range records {
 		if record.ID < record.Parent {
 			return nil, errors.New("Parent can't have a higher ID than Node")
 		}
@@ -48,26 +34,18 @@ func Build(records []Record) (*Node, error) {
 			return nil, errors.New("Node can't be its own parent")
 		}
 
-		if nodes[record.ID] != nil {
-			return nil, errors.New("Duplicate Node passed")
-		}
-
 		if record.ID != i {
 			return nil, errors.New("Records must be continuous")
 		}
 
-		node := Node{
+		nodes[record.ID] = &Node{
 			record.ID,
 			nil,
 		}
 
-		nodes[record.ID] = &node
-
-		if record.ID == 0 {
-			continue
+		if record.ID > 0 {
+			nodes[record.Parent].Children = append(nodes[record.Parent].Children, nodes[record.ID])
 		}
-
-		nodes[record.Parent].Children = append(nodes[record.Parent].Children, &node)
 	}
 
 	return nodes[0], nil
