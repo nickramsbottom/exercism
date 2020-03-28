@@ -15,17 +15,19 @@ var usedNames = map[string]bool{}
 
 // Name get the name from Robot
 func (r *Robot) Name() (string, error) {
-	if r.name == "" {
-		if len(usedNames) == 10*10*10*26*26 {
-			return "", errors.New("Namespace exhausted")
-		}
-
-		r.name = newName()
-		for usedNames[r.name] {
-			r.name = newName()
-		}
-		usedNames[r.name] = true
+	if r.name != "" {
+		return r.name, nil
 	}
+
+	if len(usedNames) == 10*10*10*26*26 {
+		return "", errors.New("Namespace exhausted")
+	}
+
+	r.name = newName()
+	for usedNames[r.name] {
+		r.name = newName()
+	}
+	usedNames[r.name] = true
 
 	return r.name, nil
 }
