@@ -11,10 +11,11 @@ import (
 
 // Record an individual element in a Tally
 type Record struct {
-	name  string
-	won   int
-	drawn int
-	lost  int
+	name   string
+	won    int
+	drawn  int
+	lost   int
+	points int
 }
 
 func (r Record) String() string {
@@ -24,12 +25,8 @@ func (r Record) String() string {
 		r.won,
 		r.drawn,
 		r.lost,
-		r.score(),
+		r.points,
 	)
-}
-
-func (r Record) score() int {
-	return 3*r.won + r.drawn
 }
 
 // Tally creates a league table from raw results input
@@ -62,6 +59,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 				0,
 				0,
 				0,
+				0,
 			}
 		}
 
@@ -71,19 +69,24 @@ func Tally(reader io.Reader, writer io.Writer) error {
 				0,
 				0,
 				0,
+				0,
 			}
 		}
 
 		switch result {
 		case "win":
 			records[t1].won++
+			records[t1].points += 3
 			records[t2].lost++
 		case "loss":
 			records[t1].lost++
 			records[t2].won++
+			records[t2].points += 3
 		case "draw":
 			records[t1].drawn++
+			records[t1].points++
 			records[t2].drawn++
+			records[t2].points++
 		default:
 			return errors.New("Invalid match result")
 		}
@@ -98,11 +101,11 @@ func Tally(reader io.Reader, writer io.Writer) error {
 		record1 := recordsSlice[i]
 		record2 := recordsSlice[j]
 
-		if record1.score() == record2.score() {
+		if record1.points == record2.points {
 			return record1.name < record2.name
 		}
 
-		return record1.score() > record2.score()
+		return record1.points > record2.points
 	})
 
 	writer.Write([]byte("Team                           | MP |  W |  D |  L |  P\n"))
