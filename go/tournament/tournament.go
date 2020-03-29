@@ -9,16 +9,32 @@ import (
 	"strings"
 )
 
-// Record an indicidual element in a Tally
+// Record an individual element in a Tally
 type Record struct {
+	name  string
 	won   int
 	drawn int
 	lost  int
 }
 
+func (r Record) String() string {
+	return fmt.Sprintf("%-30s |%3d |%3d |%3d |%3d |%3d\n",
+		r.name,
+		r.won+r.drawn+r.lost,
+		r.won,
+		r.drawn,
+		r.lost,
+		r.score(),
+	)
+}
+
+func (r Record) score() int {
+	return 3*r.won + r.drawn
+}
+
 // Tally creates a league table from raw results input
 func Tally(reader io.Reader, writer io.Writer) error {
-	var teams = make(map[string]*Record)
+	var records = make(map[string]*Record)
 
 	scanner := bufio.NewScanner(reader)
 	scanner.Split(bufio.ScanLines)
@@ -40,66 +56,59 @@ func Tally(reader io.Reader, writer io.Writer) error {
 		t2 := separated[1]
 		result := separated[2]
 
-		if _, exists := teams[t1]; !exists {
-			teams[t1] = &Record{
+		if _, exists := records[t1]; !exists {
+			records[t1] = &Record{
+				t1,
 				0,
 				0,
 				0,
 			}
 		}
 
-		if _, exists := teams[t2]; !exists {
-			teams[t2] = &Record{
+		if _, exists := records[t2]; !exists {
+			records[t2] = &Record{
+				t2,
 				0,
 				0,
 				0,
 			}
 		}
 
-		if result == "win" {
-			teams[t1].won++
-			teams[t2].lost++
-		} else if result == "loss" {
-			teams[t1].lost++
-			teams[t2].won++
-		} else if result == "draw" {
-			teams[t1].drawn++
-			teams[t2].drawn++
-		} else {
+		switch result {
+		case "win":
+			records[t1].won++
+			records[t2].lost++
+		case "loss":
+			records[t1].lost++
+			records[t2].won++
+		case "draw":
+			records[t1].drawn++
+			records[t2].drawn++
+		default:
 			return errors.New("Invalid match result")
 		}
 	}
 
-	keys := make([]string, 0, len(teams))
-	for k := range teams {
-		keys = append(keys, k)
+	recordsSlice := make([]*Record, 0, len(records))
+	for _, record := range records {
+		recordsSlice = append(recordsSlice, record)
 	}
 
-	sort.Slice(keys, func(i, j int) bool {
-		score1 := teams[keys[i]].drawn + 3*teams[keys[i]].won
-		score2 := teams[keys[j]].drawn + 3*teams[keys[j]].won
+	sort.Slice(recordsSlice, func(i, j int) bool {
+		record1 := recordsSlice[i]
+		record2 := recordsSlice[j]
 
-		if score1 == score2 {
-			return keys[i] < keys[j]
+		if record1.score() == record2.score() {
+			return record1.name < record2.name
 		}
 
-		return score1 > score2
+		return record1.score() > record2.score()
 	})
 
 	writer.Write([]byte("Team                           | MP |  W |  D |  L |  P\n"))
 
-	for _, name := range keys {
-		team := teams[name]
-
-		writer.Write([]byte(
-			fmt.Sprintf("%-30s |%3d |%3d |%3d |%3d |%3d\n",
-				name,
-				team.won+team.drawn+team.lost,
-				team.won,
-				team.drawn,
-				team.lost,
-				3*team.won+team.drawn,
-			)))
+	for _, record := range recordsSlice {
+		writer.Write([]byte(record.String()))
 	}
 
 	return nil
