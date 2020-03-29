@@ -20,7 +20,7 @@ type Record struct {
 
 // Tally creates a league table from raw results input
 func Tally(reader io.Reader, writer io.Writer) error {
-	var records = make(map[string]*Record)
+	var records = make(map[string]Record)
 
 	scanner := bufio.NewScanner(reader)
 	scanner.Split(bufio.ScanLines)
@@ -38,50 +38,39 @@ func Tally(reader io.Reader, writer io.Writer) error {
 			return errors.New("Invalid record")
 		}
 
-		t1 := separated[0]
-		t2 := separated[1]
-		result := separated[2]
+		t1, t2, result := separated[0], separated[1], separated[2]
+		r1, r2 := records[t1], records[t2]
 
-		if _, exists := records[t1]; !exists {
-			records[t1] = &Record{
-				t1,
-				0,
-				0,
-				0,
-				0,
-			}
+		if r1.name == "" {
+			r1.name = t1
 		}
 
-		if _, exists := records[t2]; !exists {
-			records[t2] = &Record{
-				t2,
-				0,
-				0,
-				0,
-				0,
-			}
+		if r2.name == "" {
+			r2.name = t2
 		}
 
 		switch result {
 		case "win":
-			records[t1].won++
-			records[t1].points += 3
-			records[t2].lost++
+			r1.won++
+			r1.points += 3
+			r2.lost++
 		case "loss":
-			records[t1].lost++
-			records[t2].won++
-			records[t2].points += 3
+			r1.lost++
+			r2.won++
+			r2.points += 3
 		case "draw":
-			records[t1].drawn++
-			records[t1].points++
-			records[t2].drawn++
-			records[t2].points++
+			r1.drawn++
+			r1.points++
+			r2.drawn++
+			r2.points++
 		default:
 			return errors.New("Invalid match result")
 		}
+
+		records[t1], records[t2] = r1, r2
 	}
 
-	recordsSlice := make([]*Record, 0, len(records))
+	recordsSlice := make([]Record, 0, len(records))
 	for _, record := range records {
 		recordsSlice = append(recordsSlice, record)
 	}
