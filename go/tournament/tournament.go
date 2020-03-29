@@ -18,17 +18,6 @@ type Record struct {
 	points int
 }
 
-func (r Record) String() string {
-	return fmt.Sprintf("%-30s |%3d |%3d |%3d |%3d |%3d\n",
-		r.name,
-		r.won+r.drawn+r.lost,
-		r.won,
-		r.drawn,
-		r.lost,
-		r.points,
-	)
-}
-
 // Tally creates a league table from raw results input
 func Tally(reader io.Reader, writer io.Writer) error {
 	var records = make(map[string]*Record)
@@ -110,8 +99,17 @@ func Tally(reader io.Reader, writer io.Writer) error {
 
 	writer.Write([]byte("Team                           | MP |  W |  D |  L |  P\n"))
 
-	for _, record := range recordsSlice {
-		writer.Write([]byte(record.String()))
+	for _, r := range recordsSlice {
+		fmt.Fprintf(
+			writer,
+			"%-30s |%3d |%3d |%3d |%3d |%3d\n",
+			r.name,
+			r.won+r.drawn+r.lost,
+			r.won,
+			r.drawn,
+			r.lost,
+			r.points,
+		)
 	}
 
 	return nil
