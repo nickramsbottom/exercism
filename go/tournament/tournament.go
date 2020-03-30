@@ -10,7 +10,7 @@ import (
 )
 
 // Record an individual element in a Tally
-type Record struct {
+type record struct {
 	name    string
 	matches int
 	won     int
@@ -21,7 +21,7 @@ type Record struct {
 
 // Tally creates a league table from raw results input
 func Tally(reader io.Reader, writer io.Writer) error {
-	var records = make(map[string]Record)
+	var records = make(map[string]record)
 
 	scanner := bufio.NewScanner(reader)
 	scanner.Split(bufio.ScanLines)
@@ -69,7 +69,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 		records[t1], records[t2] = r1, r2
 	}
 
-	recordsSlice := make([]Record, 0, len(records))
+	recordsSlice := make([]record, 0, len(records))
 	for _, record := range records {
 		recordsSlice = append(recordsSlice, record)
 	}
