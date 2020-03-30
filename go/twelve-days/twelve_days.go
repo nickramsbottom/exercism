@@ -1,18 +1,18 @@
 package twelve
 
 var gifts = [12]string{
-	"a Partridge in a Pear Tree",
-	"two Turtle Doves",
-	"three French Hens",
-	"four Calling Birds",
-	"five Gold Rings",
-	"six Geese-a-Laying",
-	"seven Swans-a-Swimming",
-	"eight Maids-a-Milking",
-	"nine Ladies Dancing",
-	"ten Lords-a-Leaping",
-	"eleven Pipers Piping",
-	"twelve Drummers Drumming",
+	"a Partridge in a Pear Tree.",
+	"two Turtle Doves, ",
+	"three French Hens, ",
+	"four Calling Birds, ",
+	"five Gold Rings, ",
+	"six Geese-a-Laying, ",
+	"seven Swans-a-Swimming, ",
+	"eight Maids-a-Milking, ",
+	"nine Ladies Dancing, ",
+	"ten Lords-a-Leaping, ",
+	"eleven Pipers Piping, ",
+	"twelve Drummers Drumming, ",
 }
 
 var numbers = [12]string{
@@ -51,11 +51,9 @@ func Verse(n int) string {
 
 	for i := n - 1; i >= 0; i-- {
 		if i == 0 && n > 1 {
-			verse += "and " + gifts[i] + "."
-		} else if i == 0 && n == 1 {
-			verse += gifts[i] + "."
+			verse += "and " + gifts[i]
 		} else {
-			verse += gifts[i] + ", "
+			verse += gifts[i]
 		}
 	}
 
