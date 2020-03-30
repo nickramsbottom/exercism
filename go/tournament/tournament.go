@@ -36,7 +36,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 		separated := strings.Split(line, ";")
 
 		if len(separated) != 3 {
-			return errors.New("Invalid record")
+			return errors.New("Invalid record: " + line)
 		}
 
 		t1, t2, result := separated[0], separated[1], separated[2]
@@ -63,7 +63,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 			r2.drawn++
 			r2.points++
 		default:
-			return errors.New("Invalid match result")
+			return errors.New("Invalid match result: " + line)
 		}
 
 		records[t1], records[t2] = r1, r2
