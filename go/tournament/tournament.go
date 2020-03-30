@@ -85,7 +85,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 		return record1.points > record2.points
 	})
 
-	writer.Write([]byte("Team                           | MP |  W |  D |  L |  P\n"))
+	fmt.Fprintln(writer, "Team                           | MP |  W |  D |  L |  P")
 
 	for _, r := range recordsSlice {
 		fmt.Fprintf(
