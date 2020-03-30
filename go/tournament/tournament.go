@@ -41,13 +41,8 @@ func Tally(reader io.Reader, writer io.Writer) error {
 		t1, t2, result := separated[0], separated[1], separated[2]
 		r1, r2 := records[t1], records[t2]
 
-		if r1.name == "" {
-			r1.name = t1
-		}
-
-		if r2.name == "" {
-			r2.name = t2
-		}
+		r1.name = t1
+		r2.name = t2
 
 		switch result {
 		case "win":
