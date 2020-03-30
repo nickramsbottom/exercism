@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// Record an individual element in a Tally
+// record an individual element in a Tally
 type record struct {
 	name    string
 	matches int
@@ -70,19 +70,19 @@ func Tally(reader io.Reader, writer io.Writer) error {
 	}
 
 	recordsSlice := make([]record, 0, len(records))
-	for _, record := range records {
-		recordsSlice = append(recordsSlice, record)
+	for _, r := range records {
+		recordsSlice = append(recordsSlice, r)
 	}
 
 	sort.Slice(recordsSlice, func(i, j int) bool {
-		record1 := recordsSlice[i]
-		record2 := recordsSlice[j]
+		r1 := recordsSlice[i]
+		r2 := recordsSlice[j]
 
-		if record1.points == record2.points {
-			return record1.name < record2.name
+		if r1.points == r2.points {
+			return r1.name < r2.name
 		}
 
-		return record1.points > record2.points
+		return r1.points > r2.points
 	})
 
 	fmt.Fprintln(writer, "Team                           | MP |  W |  D |  L |  P")
