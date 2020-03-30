@@ -11,11 +11,12 @@ import (
 
 // Record an individual element in a Tally
 type Record struct {
-	name   string
-	won    int
-	drawn  int
-	lost   int
-	points int
+	name    string
+	matches int
+	won     int
+	drawn   int
+	lost    int
+	points  int
 }
 
 // Tally creates a league table from raw results input
@@ -43,6 +44,9 @@ func Tally(reader io.Reader, writer io.Writer) error {
 
 		r1.name = t1
 		r2.name = t2
+
+		r1.matches++
+		r2.matches++
 
 		switch result {
 		case "win":
@@ -88,7 +92,7 @@ func Tally(reader io.Reader, writer io.Writer) error {
 			writer,
 			"%-30s |%3d |%3d |%3d |%3d |%3d\n",
 			r.name,
-			r.won+r.drawn+r.lost,
+			r.matches,
 			r.won,
 			r.drawn,
 			r.lost,
