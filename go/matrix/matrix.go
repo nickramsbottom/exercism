@@ -17,28 +17,28 @@ func New(stringMatrix string) (Matrix, error) {
 	var width int
 
 	for i, row := range rows {
-		trimmedRow := strings.TrimSpace(row)
-		splitRow := strings.Split(trimmedRow, " ")
+		trimRow := strings.TrimSpace(row)
+		rowStrings := strings.Split(trimRow, " ")
 
-		var splitRowInt []int
+		var rowInts []int
 
-		for _, char := range splitRow {
+		for _, char := range rowStrings {
 			integer, ok := strconv.Atoi(char)
 			if ok != nil {
 				return nil, ok
 			}
-			splitRowInt = append(splitRowInt, integer)
+			rowInts = append(rowInts, integer)
 		}
 
 		if i == 0 {
-			width = len(splitRowInt)
+			width = len(rowInts)
 		} else {
-			if len(splitRowInt) != width {
+			if len(rowInts) != width {
 				return nil, errors.New("uneven rows")
 			}
 		}
 
-		m = append(m, splitRowInt)
+		m = append(m, rowInts)
 	}
 
 	return Matrix(m), nil
@@ -46,32 +46,32 @@ func New(stringMatrix string) (Matrix, error) {
 
 // Rows get the rows of the matrix
 func (m Matrix) Rows() [][]int {
-	var matrixCopy [][]int
+	var mCopy [][]int
 
 	for i := range m {
-		var matrixRow []int
+		var row []int
 		for j := range m[0] {
-			matrixRow = append(matrixRow, m[i][j])
+			row = append(row, m[i][j])
 		}
-		matrixCopy = append(matrixCopy, matrixRow)
+		mCopy = append(mCopy, row)
 	}
 
-	return matrixCopy
+	return mCopy
 }
 
 // Cols get the columns of the matrix
 func (m Matrix) Cols() [][]int {
-	var matrixCopy [][]int
+	var mCopy [][]int
 
 	for i := range m[0] {
-		var matrixRow []int
+		var row []int
 		for j := range m {
-			matrixRow = append(matrixRow, m[j][i])
+			row = append(row, m[j][i])
 		}
-		matrixCopy = append(matrixCopy, matrixRow)
+		mCopy = append(mCopy, row)
 	}
 
-	return matrixCopy
+	return mCopy
 }
 
 // Set a value in Matrix
