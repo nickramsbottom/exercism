@@ -14,8 +14,9 @@ func New(stringMatrix string) (Matrix, error) {
 	rows := strings.Split(stringMatrix, "\n")
 
 	var m Matrix
+	var width int
 
-	for _, row := range rows {
+	for i, row := range rows {
 		trimmedRow := strings.TrimSpace(row)
 		splitRow := strings.Split(trimmedRow, " ")
 
@@ -29,15 +30,15 @@ func New(stringMatrix string) (Matrix, error) {
 			splitRowInt = append(splitRowInt, integer)
 		}
 
-		m = append(m, splitRowInt)
-	}
-
-	previousLength := len(m[0])
-
-	for i := 1; i < len(m); i++ {
-		if len(m[i]) != previousLength {
-			return nil, errors.New("uneven rows")
+		if i == 0 {
+			width = len(splitRowInt)
+		} else {
+			if len(splitRowInt) != width {
+				return nil, errors.New("uneven rows")
+			}
 		}
+
+		m = append(m, splitRowInt)
 	}
 
 	return Matrix(m), nil
