@@ -12,9 +12,8 @@ type Matrix [][]int
 // New make a matrix
 func New(stringMatrix string) (Matrix, error) {
 	var m Matrix
-	var width int
 
-	for i, row := range strings.Split(stringMatrix, "\n") {
+	for _, row := range strings.Split(stringMatrix, "\n") {
 		trimRow := strings.TrimSpace(row)
 
 		var rowInts []int
@@ -27,12 +26,8 @@ func New(stringMatrix string) (Matrix, error) {
 			rowInts = append(rowInts, integer)
 		}
 
-		if i == 0 {
-			width = len(rowInts)
-		} else {
-			if len(rowInts) != width {
-				return nil, errors.New("uneven rows")
-			}
+		if len(m) > 0 && len(rowInts) != len(m[0]) {
+			return nil, errors.New("uneven rows")
 		}
 
 		m = append(m, rowInts)
