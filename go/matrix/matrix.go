@@ -47,9 +47,9 @@ func New(stringMatrix string) (Matrix, error) {
 func (m Matrix) Rows() [][]int {
 	var matrixCopy [][]int
 
-	for i := 0; i < len(m); i++ {
+	for i := range m {
 		var matrixRow []int
-		for j := 0; j < len(m[0]); j++ {
+		for j := range m[0] {
 			matrixRow = append(matrixRow, m[i][j])
 		}
 		matrixCopy = append(matrixCopy, matrixRow)
@@ -62,9 +62,9 @@ func (m Matrix) Rows() [][]int {
 func (m Matrix) Cols() [][]int {
 	var matrixCopy [][]int
 
-	for i := 0; i < len(m[0]); i++ {
+	for i := range m[0] {
 		var matrixRow []int
-		for j := 0; j < len(m); j++ {
+		for j := range m {
 			matrixRow = append(matrixRow, m[j][i])
 		}
 		matrixCopy = append(matrixCopy, matrixRow)
