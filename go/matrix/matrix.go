@@ -11,18 +11,15 @@ type Matrix [][]int
 
 // New make a matrix
 func New(stringMatrix string) (Matrix, error) {
-	rows := strings.Split(stringMatrix, "\n")
-
 	var m Matrix
 	var width int
 
-	for i, row := range rows {
+	for i, row := range strings.Split(stringMatrix, "\n") {
 		trimRow := strings.TrimSpace(row)
-		rowStrings := strings.Split(trimRow, " ")
 
 		var rowInts []int
 
-		for _, char := range rowStrings {
+		for _, char := range strings.Split(trimRow, " ") {
 			integer, ok := strconv.Atoi(char)
 			if ok != nil {
 				return nil, ok
