@@ -25,7 +25,7 @@ func Open(initialDeposit int64) *Account {
 }
 
 // Close the account
-func (a *Account) Close() (payout int64, ok bool) {
+func (a *Account) Close() (int64, bool) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
@@ -34,14 +34,14 @@ func (a *Account) Close() (payout int64, ok bool) {
 	}
 
 	a.open = false
-	payout = a.balance
+	payout := a.balance
 	a.balance = 0
 
 	return payout, true
 }
 
 // Balance of the account
-func (a Account) Balance() (balance int64, ok bool) {
+func (a Account) Balance() (int64, bool) {
 	if !a.open {
 		return 0, false
 	}
@@ -50,7 +50,7 @@ func (a Account) Balance() (balance int64, ok bool) {
 }
 
 // Deposit change account balance
-func (a *Account) Deposit(amount int64) (newBalance int64, ok bool) {
+func (a *Account) Deposit(amount int64) (int64, bool) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
