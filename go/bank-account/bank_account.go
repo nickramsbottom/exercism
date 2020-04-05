@@ -6,7 +6,7 @@ import (
 
 // Account at the bank
 type Account struct {
-	sync.Mutex
+	sync.RWMutex
 	balance int64
 	closed  bool
 }
@@ -40,8 +40,8 @@ func (a *Account) Close() (int64, bool) {
 
 // Balance of the account
 func (a *Account) Balance() (int64, bool) {
-	a.Lock()
-	defer a.Unlock()
+	a.RLock()
+	defer a.RUnlock()
 	if a.closed {
 		return 0, false
 	}
