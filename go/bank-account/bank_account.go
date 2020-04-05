@@ -8,7 +8,7 @@ import (
 type Account struct {
 	sync.Mutex
 	balance int64
-	open    bool
+	closed  bool
 }
 
 // Open an account
@@ -19,7 +19,6 @@ func Open(initialDeposit int64) *Account {
 
 	return &Account{
 		balance: initialDeposit,
-		open:    true,
 	}
 }
 
@@ -28,11 +27,11 @@ func (a *Account) Close() (int64, bool) {
 	a.Lock()
 	defer a.Unlock()
 
-	if !a.open {
+	if a.closed {
 		return a.balance, false
 	}
 
-	a.open = false
+	a.closed = true
 	payout := a.balance
 	a.balance = 0
 
@@ -43,7 +42,7 @@ func (a *Account) Close() (int64, bool) {
 func (a *Account) Balance() (int64, bool) {
 	a.Lock()
 	defer a.Unlock()
-	if !a.open {
+	if a.closed {
 		return 0, false
 	}
 
@@ -55,7 +54,7 @@ func (a *Account) Deposit(amount int64) (int64, bool) {
 	a.Lock()
 	defer a.Unlock()
 
-	if !a.open {
+	if a.closed {
 		return 0, false
 	}
 
