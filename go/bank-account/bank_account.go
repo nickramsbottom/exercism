@@ -63,6 +63,6 @@ func (a *Account) Deposit(amount int64) (int64, bool) {
 		return a.balance, false
 	}
 
-	a.balance = amount + a.balance
+	a.balance += amount
 	return a.balance, true
 }
