@@ -20,9 +20,7 @@ func Open(initialDeposit int64) *Account {
 		return nil
 	}
 
-	return &Account{
-		balance: initialDeposit,
-	}
+	return &Account{balance: initialDeposit}
 }
 
 // Close updates the balance of the account to 0 and sets the account's closed boolean to true,
