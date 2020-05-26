@@ -7,7 +7,7 @@ import (
 // Square returns how many grains are on any square
 func Square(n int) (uint64, error) {
 	if 1 > n || n > 64 {
-		return uint64(0), errors.New("Invalid")
+		return 0, errors.New("Invalid")
 	}
 
 	return 1 << (n - 1), nil
