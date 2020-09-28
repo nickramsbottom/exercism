@@ -1,22 +1,21 @@
-const isQuestion = message => message.endsWith('?');
-const isShouting = message => message === message.toUpperCase() && (/[a-zA-Z]/.test(message));
+const isQuestion = message => message.trim().endsWith('?');
+const isShouting = message => message == message.toUpperCase() && (/[a-zA-Z]/.test(message));
+const isSilence = message => message.trim() == '';
 
 export const hey = message => {
-	const trimmed = message.trim();
-
-	if (trimmed == '') {
+	if (isSilence(message)) {
 		return 'Fine. Be that way!';
 	}
 
-	if (isShouting(trimmed) && isQuestion(trimmed)) {
+	if (isShouting(message) && isQuestion(message)) {
 		return 'Calm down, I know what I\'m doing!';
 	}
 
-	if (isShouting(trimmed)) {
+	if (isShouting(message)) {
 		return 'Whoa, chill out!';
 	}
 
-	if (isQuestion(trimmed)) {
+	if (isQuestion(message)) {
 		return 'Sure.';
 	}
 
