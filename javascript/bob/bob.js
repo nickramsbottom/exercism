@@ -1,5 +1,5 @@
 const isQuestion = message => message.trim().endsWith('?');
-const isShouting = message => message == message.toUpperCase() && (/[a-zA-Z]/.test(message));
+const isShouting = message => message == message.toUpperCase() && (/[A-Z]/.test(message));
 const isSilence = message => message.trim() == '';
 
 export const hey = message => {
