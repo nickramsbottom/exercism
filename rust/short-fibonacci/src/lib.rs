@@ -21,6 +21,5 @@ pub fn fibonacci() -> Vec<u8> {
     for i in 2..=4 {
         buf[i] = buf[i - 1] + buf[i - 2]
     }
-    println!("{:?}", buf);
     return buf;
 }
