@@ -18,7 +18,7 @@ pub fn fibonacci() -> Vec<u8> {
     let mut buf = create_buffer(5);
     buf[0] = 1;
     buf[1] = 1;
-    for i in 2..=4 {
+    for i in 2..5 {
         buf[i] = buf[i - 1] + buf[i - 2]
     }
     return buf;
