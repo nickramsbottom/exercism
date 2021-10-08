@@ -16,14 +16,14 @@ pub fn log(level: LogLevel, message: &str) -> String {
     }
 }
 pub fn info(message: &str) -> String {
-    "[INFO]: ".to_owned() + message
+    format!("[INFO]: {}", message)
 }
 pub fn warn(message: &str) -> String {
-    "[WARNING]: ".to_owned() + message
+    format!("[WARNING]: {}", message)
 }
 pub fn error(message: &str) -> String {
-    "[ERROR]: ".to_owned() + message
+    format!("[ERROR]: {}", message)
 }
 pub fn debug(message: &str) -> String {
-    "[DEBUG]: ".to_owned() + message
+    format!("[DEBUG]: {}", message)
 }
