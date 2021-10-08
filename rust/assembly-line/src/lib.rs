@@ -1,5 +1,3 @@
-#![allow(unused)]
-
 const PRODUCTION_RATE_DEFAULT: f64 = 221.0;
 
 pub fn production_rate_per_hour(speed: u8) -> f64 {
