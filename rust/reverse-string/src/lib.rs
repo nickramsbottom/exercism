@@ -1,5 +1,5 @@
-pub fn reverse(input: &str) -> String {
-    // let string = String::from(input);
+use unicode_segmentation::UnicodeSegmentation;
 
-    input.chars().rev().collect::<String>()
+pub fn reverse(input: &str) -> String {
+    input.graphemes(true).rev().collect::<String>()
 }
