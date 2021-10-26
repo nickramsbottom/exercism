@@ -8,11 +8,12 @@ pub fn can_construct_note(magazine: &[&str], note: &[&str]) -> bool {
     }
 
     for word in note {
-        if !available_words.contains_key(word) || available_words[word] == 0 {
-            return false;
+        match available_words.get_mut(word) {
+            None | Some(0) => {
+                return false;
+            }
+            Some(count) => *count -= 1,
         }
-
-        *available_words.get_mut(word).unwrap() -= 1;
     }
 
     true
