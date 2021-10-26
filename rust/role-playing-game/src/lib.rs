@@ -21,14 +21,14 @@ impl Player {
                 } else {
                     self.health = self.health - mana_cost;
                 }
-                return 0
+                0
             }
             Some(mana) => {
                 if mana <= mana_cost {
-                    return 0
+                    0
                 } else {
                     self.mana = Some(mana - mana_cost);
-                    return mana_cost * 2
+                    mana_cost * 2
                 }
             }
         }
