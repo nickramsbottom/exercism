@@ -6,22 +6,10 @@ pub struct Player {
 
 impl Player {
     pub fn revive(&self) -> Option<Player> {
-        if self.health != 0 {
-            return None   
-        }
-        if self.level < 10 {
-            return Some(
-                Player {
-                    health: 100,
-                    mana: None,
-                    level: self.level
-                }
-            )
-        }
-        return Some(Player {
+        (self.health == 0).then(|| Player {
             health: 100,
-            mana: Some(100),
-            level: self.level
+            mana: if self.level < 10 { None } else { Some(100) },
+            level: self.level,
         })
     }
 
