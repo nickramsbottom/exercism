@@ -8,7 +8,7 @@ pub enum CalculatorInput {
 }
 
 pub fn evaluate(inputs: &[CalculatorInput]) -> Option<i32> {
-    let mut vec: Vec<i32> = Vec::new();
+    let mut vec = Vec::new();
 
     // there's a lot of repetition in here, can we group
     // everything except value into a closure?
