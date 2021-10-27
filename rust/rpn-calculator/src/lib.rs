@@ -25,7 +25,7 @@ pub fn evaluate(inputs: &[CalculatorInput]) -> Option<i32> {
             CalculatorInput::Subtract => calculate_and_push(&mut vec, i32::sub)?,
             CalculatorInput::Multiply => calculate_and_push(&mut vec, i32::mul)?,
             CalculatorInput::Divide => calculate_and_push(&mut vec, i32::div)?,
-            CalculatorInput::Value(val) => Some(vec.push(*val))?,
+            CalculatorInput::Value(val) => vec.push(*val),
         };
     }
 
