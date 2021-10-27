@@ -1,3 +1,5 @@
+use std::ops::{Add, Div, Mul, Sub};
+
 pub enum CalculatorInput {
     Add,
     Subtract,
@@ -6,35 +8,25 @@ pub enum CalculatorInput {
     Value(i32),
 }
 
+fn calculate_and_push<T: Fn(i32, i32) -> i32>(vec: &mut Vec<i32>, func: T) -> Option<()> {
+    let rhs = vec.pop()?;
+    let lhs = vec.pop()?;
+    let tmp = func(lhs, rhs);
+    vec.push(tmp);
+    Some(())
+}
+
 pub fn evaluate(inputs: &[CalculatorInput]) -> Option<i32> {
     let mut vec = Vec::new();
 
-    // there's a lot of repetition in here, can we group
-    // everything except value into a closure?
     for input in inputs {
         match input {
-            CalculatorInput::Add => {
-                let first = vec.pop()?;
-                let second = vec.pop()?;
-                vec.push(first + second);
-            }
-            CalculatorInput::Subtract => {
-                let first = vec.pop()?;
-                let second = vec.pop()?;
-                vec.push(second - first);
-            }
-            CalculatorInput::Multiply => {
-                let first = vec.pop()?;
-                let second = vec.pop()?;
-                vec.push(first * second);
-            }
-            CalculatorInput::Divide => {
-                let first = vec.pop()?;
-                let second = vec.pop()?;
-                vec.push(second / first);
-            }
-            CalculatorInput::Value(val) => vec.push(*val),
-        }
+            CalculatorInput::Add => calculate_and_push(&mut vec, i32::add)?,
+            CalculatorInput::Subtract => calculate_and_push(&mut vec, i32::sub)?,
+            CalculatorInput::Multiply => calculate_and_push(&mut vec, i32::mul)?,
+            CalculatorInput::Divide => calculate_and_push(&mut vec, i32::div)?,
+            CalculatorInput::Value(val) => Some(vec.push(*val))?,
+        };
     }
 
     if vec.len() != 1 {
